@@ -1,0 +1,94 @@
+<html>
+<head>
+
+
+<script>
+
+var woord = "JASPER";
+var geraden = ""
+var maxmis = 8;
+var mispogingen = 0;
+
+function functie2(text){
+	var hetElement2 = document.getElementById("letter" + text);
+	hetElement2.setAttribute("onclick", "");
+	
+	if (woord.includes(text)) {
+		hetElement2.style.background = "green";
+		geraden+=text;
+	} else {
+			hetElement2.style.background = "red";
+			mispogingen++;
+	}
+	var wstr = "";
+	for (var i = 0; i < woord.length; i++) {
+	if(geraden.includes(woord.charAt(i))) {
+		wstr+=woord.charAt(i);
+	} else {
+		wstr+="*";
+	}
+	}
+	
+	
+	
+	var hetElement = document.getElementById("pizza");
+	hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + wstr;
+	
+	
+}
+
+
+
+function jojoganster(){
+	var kiesmaar = document.getElementsByTagName("html")
+	console.log(kiesmaar);
+	alert("hallo")
+	var hetElement = document.getElementById("pizza");
+	console.log(hetElement.value);
+	hetElement.value = "hallo allemaal";
+	hetElement.style.backgroundColor= 'purple';
+	
+		var hetElement2 = document.getElementById("pasta");
+
+	for (i = 0; i < 26; i++) {
+		var div = document.createElement("span");
+		var res = String.fromCharCode(65+i);
+		div.setAttribute("id", "letter"+res);
+		div.setAttribute("onclick", "functie2(\"" + res + "\")");
+		div.style.width = "20px";
+		div.style.height = "20px";
+		div.style.background = "yellow";
+		div.style.color = "white";
+		div.innerHTML = res;
+		hetElement2.appendChild(div);
+}
+}
+
+
+
+</script>
+<style>
+	h1{ background-color:green;
+	}
+
+
+	#pizza{
+		background-color:orange;
+	}
+	
+	#pasta{
+		background-color:purple;
+	}
+	
+
+</style>
+
+</head>
+<body>
+
+<h1 onclick="jojoganster()">Nieuw spel</h1>
+<textarea cols = "500" id = "pizza"> Hier komt het woord </textarea>
+<h1 id = "pasta"> Kies uit de volgende letters:  </h1>
+
+</body>
+</html>
