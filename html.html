@@ -8,38 +8,46 @@ var woord = "JASPER";
 var geraden = ""
 var maxmis = 8;
 var mispogingen = 0;
+var geradenW = false;
 
-function functie2(text){
-	var hetElement2 = document.getElementById("letter" + text);
-	hetElement2.setAttribute("onclick", "");
-	
-	if (woord.includes(text)) {
-		hetElement2.style.background = "green";
-		geraden+=text;
-	} else {
-			hetElement2.style.background = "red";
-			mispogingen++;
-	}
-	var wstr = "";
-	for (var i = 0; i < woord.length; i++) {
-	if(geraden.includes(woord.charAt(i))) {
-		wstr+=woord.charAt(i);
-	} else {
-		wstr+="*";
-	}
-	}
-	
-	
-	
+function kiesLetter(text){
 	var hetElement = document.getElementById("pizza");
-	hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + wstr;
-	
-	
+		if((maxmis-mispogingen)>0 || !geradenW) {
+			var hetElement2 = document.getElementById("letter" + text);
+			hetElement2.setAttribute("onclick", "");
+			
+			if (woord.includes(text)) {
+				hetElement2.style.background = "green";
+				geraden+=text;
+			} else {
+					hetElement2.style.background = "red";
+					mispogingen++;
+			}
+			var wstr = "";
+			geradenW = true;
+			for (var i = 0; i < woord.length; i++) {
+				if(geraden.includes(woord.charAt(i))) {
+					wstr+=woord.charAt(i);
+				} else {
+					wstr+="*";
+					geradenW = false;
+				}
+			}
+			hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + wstr;
+		} else if(geradenW) {
+			hetElement.value = "Gewonnen!";
+
+		} else {
+				
+					hetElement.value = "Game over!" + wstr;
+
+		}
+		
 }
 
+function ResetSpel(){
 
-
-function jojoganster(){
+	
 	var kiesmaar = document.getElementsByTagName("html")
 	console.log(kiesmaar);
 	alert("hallo")
@@ -47,14 +55,13 @@ function jojoganster(){
 	console.log(hetElement.value);
 	hetElement.value = "hallo allemaal";
 	hetElement.style.backgroundColor= 'purple';
-	
-		var hetElement2 = document.getElementById("pasta");
+	var hetElement2 = document.getElementById("pasta");
 
 	for (i = 0; i < 26; i++) {
 		var div = document.createElement("span");
 		var res = String.fromCharCode(65+i);
 		div.setAttribute("id", "letter"+res);
-		div.setAttribute("onclick", "functie2(\"" + res + "\")");
+		div.setAttribute("onclick", "kiesLetter(\"" + res + "\")");
 		div.style.width = "20px";
 		div.style.height = "20px";
 		div.style.background = "yellow";
@@ -67,6 +74,7 @@ function jojoganster(){
 
 
 </script>
+
 <style>
 	h1{ background-color:green;
 	}
@@ -86,7 +94,7 @@ function jojoganster(){
 </head>
 <body>
 
-<h1 onclick="jojoganster()">Nieuw spel</h1>
+<h1 onclick="ResetSpel()">Nieuw spel</h1>
 <textarea cols = "500" id = "pizza"> Hier komt het woord </textarea>
 <h1 id = "pasta"> Kies uit de volgende letters:  </h1>
 
