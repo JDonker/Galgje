@@ -5,57 +5,63 @@
 <script>
 
 var woord = "JASPER";
-var geraden = ""
+var geradenLetters = ""
 var maxmis = 8;
 var mispogingen = 0;
-var geradenW = false;
+var geraden = false;
 
 function kiesLetter(text){
 	var hetElement = document.getElementById("pizza");
-		if((maxmis-mispogingen)>0 || !geradenW) {
+		if((maxmis-mispogingen)>0 && !geraden) {
 			var hetElement2 = document.getElementById("letter" + text);
 			hetElement2.setAttribute("onclick", "");
 			
 			if (woord.includes(text)) {
 				hetElement2.style.background = "green";
-				geraden+=text;
+				geradenLetters+=text;
 			} else {
 					hetElement2.style.background = "red";
 					mispogingen++;
 			}
-			var wstr = "";
-			geradenW = true;
-			for (var i = 0; i < woord.length; i++) {
-				if(geraden.includes(woord.charAt(i))) {
-					wstr+=woord.charAt(i);
-				} else {
-					wstr+="*";
-					geradenW = false;
-				}
-			}
-			hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + wstr;
-		} else if(geradenW) {
+		
+			hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + woordGuess();
+		} 
+		
+		if(geraden) {
 			hetElement.value = "Gewonnen!";
+		} 
 
-		} else {
-				
-					hetElement.value = "Game over!" + wstr;
-
+		if ((maxmis-mispogingen)==0){
+			hetElement.value = "Game over! het was " + woord;
 		}
 		
 }
 
-function ResetSpel(){
+function resetSpel(){
+	woord = randomWoord();
+	var hetElement2 = document.getElementById("pasta");
 
-	
-	var kiesmaar = document.getElementsByTagName("html")
-	console.log(kiesmaar);
-	alert("hallo")
+	for (i = 0; i < 26; i++) {
+		var res = String.fromCharCode(65+i);
+		var hetElement2 = document.getElementById("letter" + res);
+		console.log(hetElement2);
+		hetElement2.setAttribute("onclick", "kiesLetter(\"" + res + "\")");
+		hetElement2.style.background = "yellow";
+	}
+	geradenLetters="";
+	geraden=false;
+	mispogingen=0;
+
 	var hetElement = document.getElementById("pizza");
 	console.log(hetElement.value);
-	hetElement.value = "hallo allemaal";
+	hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + woordGuess();
 	hetElement.style.backgroundColor= 'purple';
-	var hetElement2 = document.getElementById("pasta");
+}
+
+function nieuwSpel(){
+
+woord = randomWoord();
+var hetElement2 = document.getElementById("pasta");
 
 	for (i = 0; i < 26; i++) {
 		var div = document.createElement("span");
@@ -68,7 +74,35 @@ function ResetSpel(){
 		div.style.color = "white";
 		div.innerHTML = res;
 		hetElement2.appendChild(div);
+	}
+	var button = document.getElementById("button");
+	button.innerHTML = "RESET spel";
+	button.setAttribute("onclick", "resetSpel()");
+
+	var hetElement = document.getElementById("pizza");
+	console.log(hetElement.value);
+	hetElement.value = "Nog "+ (maxmis-mispogingen) + " beurten.     " + woordGuess();
+	hetElement.style.backgroundColor= 'purple';
 }
+
+function randomWoord(){
+ var woorden= ["JOJO","GANGSTER","SUPER","RODEO","GARNAAL","JASPER"];
+ var daarom =  Math.floor((Math.random() * woorden.length));
+ return woorden[daarom];
+}
+
+function woordGuess(){
+	var wstr = "";
+			geraden = true;
+			for (var i = 0; i < woord.length; i++) {
+				if(geradenLetters.includes(woord.charAt(i))) {
+					wstr+=woord.charAt(i);
+				} else {
+					wstr+="*";
+					geraden = false;
+				}
+			}
+		return wstr;	
 }
 
 
@@ -94,7 +128,7 @@ function ResetSpel(){
 </head>
 <body>
 
-<h1 onclick="ResetSpel()">Nieuw spel</h1>
+<h1 onclick="nieuwSpel()" id = "button">Nieuw spel</h1>
 <textarea cols = "500" id = "pizza"> Hier komt het woord </textarea>
 <h1 id = "pasta"> Kies uit de volgende letters:  </h1>
 
